@@ -1,0 +1,8 @@
+name: XYZPlugin
+version: '${project.version}'
+main: me.shwepsss.xyzplugin.XYZPlugin
+api-version: '1.20'
+commands:
+  xyz:
+    description: Using the command sends in chat your xyz coordinates and adding a players name after the command will send their xyz coordinates privately
+    usage: /<command>
