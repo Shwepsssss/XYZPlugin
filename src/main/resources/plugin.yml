@@ -6,3 +6,12 @@ commands:
   xyz:
     description: Using the command sends in chat your xyz coordinates and adding a players name after the command will send their xyz coordinates privately
     usage: /<command>
+  xyz add {name}:
+    description: Using this command allows the user to save waypoints by names
+    usage: /<command>
+  xyz list :
+    description: Sends the user all the waypoints he saved also possible to send a specific waypoint by adding the name of it after list like this /xyz list {name}
+    usage: /<command>
+  xyz delete {all/{name}}:
+    description: User is able to delete waypoints he saved
+    usage: /<command>
