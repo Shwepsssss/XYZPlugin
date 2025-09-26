@@ -1,6 +1,7 @@
 package me.shwepsss.xyzplugin;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -48,19 +49,24 @@ public final class XYZPlugin extends JavaPlugin implements Listener {
                     p.chat(getPLocation(p));
                 }
                 else if(args.length == 2 && args[0].equals("add")){
-
                     File playerFile = new File(getDataFolder() + "/playerdata", p.getUniqueId() + ".yml");
                     YamlConfiguration data = YamlConfiguration.loadConfiguration(playerFile);
                     data.set(args[1], getPLocation(p));
                     saveData(data, playerFile);
+                    p.sendMessage(ChatColor.GREEN + "The XYZ coordinates has been saved as: " + args[1]);
                 }
                 else if(args[0].equals("list")){
                     File playerFile = new File(getDataFolder() + "/playerdata", p.getUniqueId() + ".yml");
                     YamlConfiguration data = YamlConfiguration.loadConfiguration(playerFile);
                     if (args.length == 1) {
-                        for (String key : data.getKeys(false)) {
-                            Object value = data.get(key);
-                            p.sendMessage(key + ": " + value);
+                        if (data.getKeys(false).isEmpty()){
+                            p.sendMessage("List is empty use /xyz add {name} to add waypoints");
+                        }
+                        else {
+                            for (String key : data.getKeys(false)) {
+                                Object value = data.get(key);
+                                p.sendMessage(key + ": " + value);
+                            }
                         }
                     }else if(args.length == 2){
                         p.sendMessage(args[1]+ ": " + data.get(args[1]));
@@ -75,12 +81,14 @@ public final class XYZPlugin extends JavaPlugin implements Listener {
                             data.set(key, null);
                             saveData(data, playerFile);
                         }
+                        p.sendMessage(ChatColor.RED + "All waypoints has been removed");
                     }
                         else{
                         for (String key : data.getKeys(false)) {
                             if (key.equals(args[1])){
                                 data.set(key, null);
                                 saveData(data, playerFile);
+                                p.sendMessage(ChatColor.RED + "The XYZ coordinates for the name: "+ args[1] +" has been deleted");
                             }
                         }
                     }
@@ -100,7 +108,6 @@ public final class XYZPlugin extends JavaPlugin implements Listener {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
     public String getPLocation(Player p){
         return Math.round(p.getLocation().getX()) + ", " + Math.round(p.getLocation().getY()) + ", " + Math.round(p.getLocation().getZ());
